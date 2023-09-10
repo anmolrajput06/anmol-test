@@ -48,7 +48,7 @@ const EventDataTable = (props) => {
       title: 'Event successfully deleted',
       text: 'Your event has been successfully deleted.',
     }).then(() => {
-      navigate('/EventDataTable');
+      navigate('/assignment/list');
 
     });
 
@@ -80,14 +80,7 @@ const EventDataTable = (props) => {
   }, []);
 
 
-  // EDIT ASSIGNMENT
-  const LoadEdit = (_id) => {
-    const formData = {
-      id: _id
-    };
-    // console.log('vjffj',formData);
-    navigate(`/eventUpdate/${formData.id}`);
-  };
+
 
   // TABLE COLUMN
   var columns = [
@@ -187,32 +180,28 @@ const EventDataTable = (props) => {
 
   ];
 
-  // PDF VIEW
-  var fetchPdfData = (row) => {
-    // alert(row.pdf)
-    console.log(row.pdf);
-    //     const text = row.pdf;
-
-    //     // Encode the text to UTF-8 using TextEncoder
-    //     const encoder = new TextEncoder();
-    //     const utf8Bytes = encoder.encode(text);
-
-    //     // Create a Uint8Array from the UTF-8 encoded data
-    //     const uint8Array = new Uint8Array(utf8Bytes);
-
-    // // Convert the Uint8Array to a regular array
-    // const array = Array.from(uint8Array);
-
-    // // Convert the array to a string using the spread operator
-    // const byteArray = [...array];
-
-    // // Encode the byteArray to Base64
-    // const base64Data = btoa(byteArray.map(byte => String.fromCharCode(byte)).join(''));
-
-    // console.log(base64Data);
-
-
-  }
+  const fetchPdfData = (row) => {
+    console.log(row.pdf)
+    const pdfData = row.pdf;
+  
+    try {
+      const blob = new Blob([pdfData], { type: 'Buffer' });
+      const url = window.URL.createObjectURL(blob);
+  
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'your-pdf-file.pdf';
+      link.click();
+  
+      window.URL.revokeObjectURL(url);
+      link.remove();
+    } catch (error) {
+      console.error('Error loading PDF:', error);
+      // Handle the error, e.g., show an error message to the user
+    }
+  };
+  
+  
 
 
   const Resubmit = (id) => {
@@ -296,54 +285,28 @@ const EventDataTable = (props) => {
   };
 
 
-  // var SubmitAssigment = async(event) => {
-  //   event.preventDefault();
-  //   const formData = new FormData();
-  //   formData.append('pdf', file);
-  //   formData.append('assignmentsId', assignmentsId);
-
-  //   let config = {
-  //     method: 'post',
-  //     maxBodyLength: Infinity,
-  //     url: 'http://localhost:5000/update/assignment',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     data: {
-  //       base64Data:base64Data  ,
-  //       assignmentsId:assignmentsId      
-  //     }
-  //   };
-
-  //   axios.request(config)
-  //     .then((response) => {
-  //       console.log(JSON.stringify(response.data));
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-
-  // }
-
-
-  const SubmitAssigment = async (event) => {
+  const SubmitAssignment = async (event) => {
     event.preventDefault();
-
+  
     if (file) {
-      const formData1 = new FormData();
-      formData1.append('pdf', file);
-      formData1.append('assignmentsId', assignmentsId);
-
-      console.log(formData1); // This should log the FormData object with data.
+      console.log(file);
+      console.log(assignmentsId);
+  
+      var formData1 = {}
+      formData1.push('pdf', file);
+      formData1.push('assignmentsId', assignmentsId);
+      
+      console.log('formData1:', formData1); // Log the FormData object
+      
       
       try {
         const response = await fetch('http://localhost:5000/update/assignment', {
           method: 'POST',
           body: formData1,
         });
-
+  
         if (response.ok) {
-          // File successfully uploadedif
+          // File successfully uploaded
           console.log('File uploaded successfully');
           navigate("/EventDataTable");
         } else {
@@ -355,7 +318,7 @@ const EventDataTable = (props) => {
       }
     }
   };
-
+  
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -422,7 +385,7 @@ const EventDataTable = (props) => {
             onChange={handleFileInputChange}
           />
         </div>
-        <div> <button onClick={SubmitAssigment} style={buttonStyles}>
+        <div> <button onClick={SubmitAssignment} style={buttonStyles}>
           Submit
         </button>
           <button onClick={closeModal} style={buttonStyles}>

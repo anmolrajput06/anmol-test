@@ -116,7 +116,7 @@ var user_id = localStorage.getItem('user_id')
               title: "Successful",
               text: "Event Successfully Updated!",
             }).then(() => {
-              navigate("/EventDataTable");
+              navigate("/assignment/list");
             });
           } else {
             setSubmitDisable(false)
@@ -164,7 +164,7 @@ var user_id = localStorage.getItem('user_id')
         if (response.ok) {
           // File successfully uploadedif
           console.log('File uploaded successfully');
-          navigate("/EventDataTable");
+          navigate("/assignment/list");
         } else {
           // Error handling
           console.error('Error uploading file');
