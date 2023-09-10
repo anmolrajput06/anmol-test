@@ -1,0 +1,54 @@
+.page-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.date-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.date-group .form-group {
+  width: 48%; /* Adjust the width as needed */
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="file"],
+input[type="date"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+textarea {
+  height: 150px; /* Adjust the height for the description field */
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
